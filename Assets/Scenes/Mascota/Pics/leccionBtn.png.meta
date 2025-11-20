@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b9b99bfe161a51b40aa999d7d45fed8d
+guid: 3b5ead6cf06d98b4ba11c1005c64efc4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2895539992890530174
-    second: barra aprendizaje_0
+      213: 2691997372800884288
+    second: leccionBtn_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: barra aprendizaje_0
+      name: leccionBtn_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 12
-        width: 185
-        height: 58
+        y: 0
+        width: 116
+        height: 116
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 286a2dab7b9f0d7d0800000000000000
-      internalID: -2895539992890530174
+      spriteID: 04ed4160955eb5520800000000000000
+      internalID: 2691997372800884288
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      barra aprendizaje_0: -2895539992890530174
+      leccionBtn_0: 2691997372800884288
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
