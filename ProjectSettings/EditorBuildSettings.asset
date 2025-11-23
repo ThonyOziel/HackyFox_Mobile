@@ -32,6 +32,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Central/RetoRelampago.unity
     guid: e63fa38f66d38414bbbd2d388a094773
+  - enabled: 1
+    path: Assets/Scenes/login/Bienvenida.unity
+    guid: a59538fe2d2989045819359492871dc0
+  - enabled: 1
+    path: Assets/Scenes/login/InicioDeSesion.unity
+    guid: d0f76abf71d08344a902b4dd8fa6e161
+  - enabled: 1
+    path: Assets/Scenes/login/Registro.unity
+    guid: a05049c7a05310b4aacc05f252b01481
+  - enabled: 1
+    path: Assets/Scenes/login/Alias.unity
+    guid: c1d18cec8f21a7f49b738fedf56dd7c4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

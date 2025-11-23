@@ -1,0 +1,7 @@
+id_usuario,correo,contraseña,fecha_registro,nombre_mascota
+1,rubi@example.com,ClaveSegura123,22/11/2025 20:48,
+2,juan@example.com,OtraClave456,21/11/2025 18:30,
+3,luis@example.com,MiPass789,20/11/2025 14:15,
+4,ana@example.com,ContraseñaAna2025,19/11/2025 09:00,
+5,carla@example.com,CarlaClave321,18/11/2025 17:45,
+6,24393218@utcancun.edu.mx,1234,23/11/2025 12:30:18 p. m.,remo
