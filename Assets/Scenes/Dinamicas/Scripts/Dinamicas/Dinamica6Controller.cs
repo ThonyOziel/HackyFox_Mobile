@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /// Dinámica 6: Mochila - Arrastrar items seguros
@@ -101,7 +102,7 @@ public class Dinamica6Controller : MonoBehaviour
         Debug.Log("Guardando progreso...");
 
         // TODO: Mostrar pantalla de felicitación
-        Debug.Log("Mostrar pantalla de felicitación");
+        SceneManager.LoadScene("GoodFeedBack");
     }
 
     void OnRetry()

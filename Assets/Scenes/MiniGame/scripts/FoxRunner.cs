@@ -14,7 +14,7 @@ public class FoxRunner : MonoBehaviour
 
     [Header("Sprites")]
     [SerializeField] private Sprite idleSprite; // sprite normal
-    [SerializeField] private Sprite slideSprite; // sprite usado al recibir daño
+    [SerializeField] private Sprite slideSprite; // sprite usado al recibir daï¿½o
 
     [Header("Tambaleo horizontal")]
     [SerializeField] private float tambaleoAmplitud = 0.25f; // amplitud
@@ -26,7 +26,7 @@ public class FoxRunner : MonoBehaviour
 
     [Header("Sonidos")]
     [SerializeField] private AudioClip jumpSound; // sonido salto
-    [SerializeField] private AudioClip hurtSound; // sonido daño
+    [SerializeField] private AudioClip hurtSound; // sonido daï¿½o
 
     private AudioSource audioSource; // audio
     private Rigidbody2D FoxRb; // cuerpo fisico
@@ -38,7 +38,7 @@ public class FoxRunner : MonoBehaviour
     private bool isPressing = false; // tocando
     private float pressStartTime = 0f; // inicio toque
 
-    private bool hasTakenDamage = false; // daño recibido
+    private bool hasTakenDamage = false; // daï¿½o recibido
 
     void Start()
     {
@@ -96,12 +96,12 @@ public class FoxRunner : MonoBehaviour
         }   
     }
 
-    public void RecibirDaño()
+    public void RecibirDato()
     {
         if (hasTakenDamage) return;
         hasTakenDamage = true;
 
-        sr.sprite = slideSprite; // sprite al recibir daño
+        sr.sprite = slideSprite; // sprite al recibir dato
 
         if (hurtSound != null)
             audioSource.PlayOneShot(hurtSound);
@@ -112,13 +112,13 @@ public class FoxRunner : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!hasTakenDamage && (other.CompareTag("Ventana") || other.CompareTag("Mail"))) // colision
-            RecibirDaño();
+            RecibirDato();
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (!hasTakenDamage && (other.collider.CompareTag("Ventana") || other.collider.CompareTag("Mail"))) // colision
-            RecibirDaño();
+            RecibirDato();
     }
 
     private IEnumerator SaltoLateral()
@@ -128,19 +128,19 @@ public class FoxRunner : MonoBehaviour
         if (jumpSound != null)
             audioSource.PlayOneShot(jumpSound);
 
-        FoxRb.velocity = new Vector2(sideForce, FoxRb.velocity.y); // derecha
+        FoxRb.linearVelocity = new Vector2(sideForce, FoxRb.linearVelocity.y); // derecha
         yield return new WaitForSeconds(0.7f);
 
-        FoxRb.velocity = new Vector2(-sideForce, FoxRb.velocity.y); // izquierda
+        FoxRb.linearVelocity = new Vector2(-sideForce, FoxRb.linearVelocity.y); // izquierda
         yield return new WaitForSeconds(0.7f);
 
-        FoxRb.velocity = Vector2.zero; // detiene
+        FoxRb.linearVelocity = Vector2.zero; // detiene
         enElAire = false; // fin salto
     }
 
     private IEnumerator SalirDePantalla()
     {
-        FoxRb.velocity = new Vector2(20f, 5f); // impulso fuerte
+        FoxRb.linearVelocity = new Vector2(20f, 5f); // impulso fuerte
         yield return new WaitForSeconds(2f); // espera
         SceneManager.LoadScene("Home"); // carga escena
     }

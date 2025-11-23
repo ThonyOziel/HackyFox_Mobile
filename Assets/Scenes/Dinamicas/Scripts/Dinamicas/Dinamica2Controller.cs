@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /// Dinámica 2: Compartir o no compartir - 3 opciones
@@ -136,9 +137,7 @@ public class Dinamica2Controller : MonoBehaviour
 
         Debug.Log("Respuesta correcta!");
 
-        // TODO: Guardar progreso en BD
-        // TODO: Mostrar pantalla de felicitación
-        // TODO: Avanzar a la siguiente sección
+        SceneManager.LoadScene("GoodFeedBack");
 
         SetButtonsInteractable(false);
     }

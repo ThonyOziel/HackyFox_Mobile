@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /// Dinámica 4: Detectives del buzón - Identificar correos seguros
@@ -134,6 +135,7 @@ public class Dinamica4Controller : MonoBehaviour
         {
             // ¡Completó todos los correos!
             OnAllEmailsCompleted();
+
         }
         else
         {
@@ -204,6 +206,8 @@ public class Dinamica4Controller : MonoBehaviour
     {
         Debug.Log("¡Todos los correos completados!");
         buttonsEnabled = false;
+
+        SceneManager.LoadScene("GoodFeedBack");
 
         // TODO: Guardar progreso en BD
         // TODO: Mostrar pantalla de felicitación

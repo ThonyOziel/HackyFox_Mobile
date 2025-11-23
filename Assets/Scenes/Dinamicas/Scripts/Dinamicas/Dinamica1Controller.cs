@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Dinamica1Controller : MonoBehaviour
 {
@@ -100,24 +101,12 @@ public class Dinamica1Controller : MonoBehaviour
 
     void OnCorrectAnswer()
     {
+        Debug.Log("BOTÓN CORRECTO PRESIONADO!!!");
+
         if (isAnimating) return;
 
-        Debug.Log("Respuesta correcta!");
-
-        // Deshabilitar botones
-        SetButtonsInteractable(false);
-
-        // Guardar progreso en BD
-        if (ProgresoManager.Instance != null)
-        {
-            ProgresoManager.Instance.CompletarDinamica(idLeccion);
-        }
-
-        GoodFeedbackController.Show(
-            lessonId: idLeccion,
-            message: "¡Excelente! Has identificado correctamente el mensaje sospechoso.",
-            nextScene: SceneLoader.MENU_LECCIONES // O la siguiente dinámica
-        );
+        Debug.Log("¡Respuesta correcta!");
+        SceneManager.LoadScene("GoodFeedBack"); // carga escena
     }
 
     void OnIncorrectAnswer()
