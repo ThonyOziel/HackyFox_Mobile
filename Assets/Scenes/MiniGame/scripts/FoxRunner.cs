@@ -1,149 +1,147 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class FoxRunner : MonoBehaviour
 {
     [Header("Fuerza de salto horizontal")]
-    [SerializeField] private float sideForce = 10f;
+    [SerializeField] private float sideForce = 10f; // fuerza lateral
 
-    [Header("Límite horizontal")]
-    [SerializeField] private float limiteX = 5f;
+    [Header("Limite horizontal")]
+    [SerializeField] private float limiteX = 5f; // limite en X
 
     [Header("Sprites")]
-    [SerializeField] private Sprite idleSprite;
-    [SerializeField] private Sprite slideSprite;
-    [SerializeField] private Sprite hurtRunSprite;
-    [SerializeField] private Sprite hurtSlideSprite;
+    [SerializeField] private Sprite idleSprite; // sprite normal
+    [SerializeField] private Sprite slideSprite; // sprite usado al recibir daño
 
-    [Header("Tambaleo visual horizontal")]
-    [SerializeField] private float tambaleoAmplitud = 0.25f;
-    [SerializeField] private float tambaleoFrecuencia = 4f;
+    [Header("Tambaleo horizontal")]
+    [SerializeField] private float tambaleoAmplitud = 0.25f; // amplitud
+    [SerializeField] private float tambaleoFrecuencia = 4f; // frecuencia
 
-    [Header("Detección de input (solo touch)")]
-    [SerializeField] private float tapThreshold = 0.2f;     // Tap corto
-    [SerializeField] private float holdThreshold = 0.25f;   // Mantener
+    [Header("Deteccion de input touch")]
+    [SerializeField] private float tapThreshold = 0.2f; // tiempo tap
+    [SerializeField] private float holdThreshold = 0.25f; // tiempo hold
 
-    private Rigidbody2D FoxRb;
-    private SpriteRenderer sr;
-    private Vector3 posicionInicial; // base fija para tambaleo
-    private bool enElAire = false;   // indica si está en salto lateral
+    [Header("Sonidos")]
+    [SerializeField] private AudioClip jumpSound; // sonido salto
+    [SerializeField] private AudioClip hurtSound; // sonido daño
 
-    // Estados de input
-    private bool isPressing = false; // si el dedo está presionando
-    private bool isHolding = false;  // si se convirtió en mantener
-    private float pressStartTime = 0f; // tiempo en que empezó el toque
+    private AudioSource audioSource; // audio
+    private Rigidbody2D FoxRb; // cuerpo fisico
+    private SpriteRenderer sr; // render sprite
+    private BoxCollider2D boxCol; // collider
+    private Vector3 posicionInicial; // posicion base
+
+    private bool enElAire = false; // estado salto
+    private bool isPressing = false; // tocando
+    private float pressStartTime = 0f; // inicio toque
+
+    private bool hasTakenDamage = false; // daño recibido
 
     void Start()
     {
-        // Inicializa componentes y estado inicial
-        FoxRb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-        posicionInicial = transform.localPosition;
-        sr.sprite = idleSprite;
+        FoxRb = GetComponent<Rigidbody2D>(); // rigidbody
+        sr = GetComponent<SpriteRenderer>(); // sprite
+        boxCol = GetComponent<BoxCollider2D>(); // collider
+        audioSource = GetComponent<AudioSource>(); // audio
+        audioSource.playOnAwake = false;
+
+        posicionInicial = transform.localPosition; // guarda posicion
+        sr.sprite = idleSprite; // sprite inicial
     }
 
     void Update()
     {
-        // Detecta y procesa input táctil
-        LeerInputTouch();
+        if (hasTakenDamage) return; // no hacer nada si ya fue golpeado
 
-        // Estados visuales en suelo
-        if (!enElAire)
+        LeerInputTouch(); // procesa input
+
+        if (enElAire) // salto
         {
-            if (isHolding)
-            {
-                // Estado deslizar: sprite + ajuste visual a la izquierda
-                sr.sprite = slideSprite;
-                transform.localPosition = posicionInicial + new Vector3(-0.1f, 0f, 0f);
-            }
-            else
-            {
-                // Estado idle: sprite + tambaleo cartoon
-                sr.sprite = idleSprite;
-                float offsetX = Mathf.Sin(Time.time * tambaleoFrecuencia) * tambaleoAmplitud;
-                transform.localPosition = posicionInicial + new Vector3(offsetX, 0f, 0f);
-            }
+            sr.sprite = idleSprite;
+        }
+        else // idle
+        {
+            sr.sprite = idleSprite;
+            float offsetX = Mathf.Sin(Time.time * tambaleoFrecuencia) * tambaleoAmplitud;
+            transform.localPosition = new Vector3(posicionInicial.x + offsetX, posicionInicial.y, posicionInicial.z);
         }
 
-        // Limitar posición horizontal
-        float clampedX = Mathf.Clamp(transform.position.x, -limiteX, limiteX);
+        float clampedX = Mathf.Clamp(transform.position.x, -limiteX, limiteX); // limite X
         transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
     }
 
-    // Detecta input táctil y decide si es tap (salto lateral) o mantener (slide)
     private void LeerInputTouch()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 0) return;
+
+        Touch t = Input.GetTouch(0);
+
+        if (t.phase == TouchPhase.Began) // inicio toque
         {
-            Touch t = Input.GetTouch(0);
-
-            if (t.phase == TouchPhase.Began)
-            {
-                isPressing = true;
-                isHolding = false;
-                pressStartTime = Time.time;
-            }
-
-            // Si se mantiene más allá del umbral, pasa a estado "holding"
-            if (isPressing && !isHolding &&
-                (t.phase == TouchPhase.Stationary || t.phase == TouchPhase.Moved) &&
-                (Time.time - pressStartTime) >= holdThreshold)
-            {
-                isHolding = true;
-            }
-
-            // Fin del toque
-            if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
-            {
-                float duracion = Time.time - pressStartTime;
-
-                // Tap corto = salto lateral cartoon
-                if (duracion < tapThreshold && !enElAire)
-                {
-                    StartCoroutine(SaltoLateral());
-                }
-
-                // Reset de estados
-                isPressing = false;
-                isHolding = false;
-            }
+            isPressing = true;
+            pressStartTime = Time.time;
         }
+
+        if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled) // fin toque
+        {
+            float duracion = Time.time - pressStartTime;
+
+            if (duracion < tapThreshold && !enElAire) // salto corto
+                StartCoroutine(SaltoLateral());
+
+            isPressing = false;
+        }   
     }
 
-    // Cambia sprite según daño recibido
     public void RecibirDaño()
     {
-        if (enElAire)
-        {
-            sr.sprite = hurtRunSprite;
-        }
-        else if (isHolding)
-        {
-            sr.sprite = hurtSlideSprite;
-        }
-        else
-        {
-            sr.sprite = hurtRunSprite;
-        }
+        if (hasTakenDamage) return;
+        hasTakenDamage = true;
+
+        sr.sprite = slideSprite; // sprite al recibir daño
+
+        if (hurtSound != null)
+            audioSource.PlayOneShot(hurtSound);
+
+        StartCoroutine(SalirDePantalla()); // inicia salida
     }
 
-    // Coroutine que ejecuta el salto lateral cartoon:
-    // primero impulsa a la derecha, luego regresa a la izquierda,
-    // y finalmente se detiene en la posición base
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!hasTakenDamage && (other.CompareTag("Ventana") || other.CompareTag("Mail"))) // colision
+            RecibirDaño();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (!hasTakenDamage && (other.collider.CompareTag("Ventana") || other.collider.CompareTag("Mail"))) // colision
+            RecibirDaño();
+    }
+
     private IEnumerator SaltoLateral()
     {
-        enElAire = true;
+        enElAire = true; // inicia salto
 
-        // Impulso a la derecha
-        FoxRb.velocity = new Vector2(sideForce, FoxRb.velocity.y);
-        yield return new WaitForSeconds(0.2f);
+        if (jumpSound != null)
+            audioSource.PlayOneShot(jumpSound);
 
-        // Impulso de regreso a la izquierda
-        FoxRb.velocity = new Vector2(-sideForce, FoxRb.velocity.y);
-        yield return new WaitForSeconds(0.2f);
+        FoxRb.velocity = new Vector2(sideForce, FoxRb.velocity.y); // derecha
+        yield return new WaitForSeconds(0.7f);
 
-        // Detener y volver a estado en suelo
-        FoxRb.velocity = Vector2.zero;
-        enElAire = false;
+        FoxRb.velocity = new Vector2(-sideForce, FoxRb.velocity.y); // izquierda
+        yield return new WaitForSeconds(0.7f);
+
+        FoxRb.velocity = Vector2.zero; // detiene
+        enElAire = false; // fin salto
+    }
+
+    private IEnumerator SalirDePantalla()
+    {
+        FoxRb.velocity = new Vector2(20f, 5f); // impulso fuerte
+        yield return new WaitForSeconds(2f); // espera
+        SceneManager.LoadScene("Home"); // carga escena
     }
 }
