@@ -1491,6 +1491,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1526496460}
     m_Modifications:
+    - target: {fileID: 1831900161597568060, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_text
+      value: "Lecci\xF3n 6. Mochila Ciberdefensor\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1831900161597568060, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_fontSize
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1831900161597568060, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 2580864683316351915, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1570,6 +1582,14 @@ PrefabInstance:
     - target: {fileID: 2580864683316351915, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963792976723194357, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1215.7126
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963792976723194357, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 66.76912
       objectReference: {fileID: 0}
     - target: {fileID: 5724865977951772259, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_Name
@@ -2761,7 +2781,7 @@ MonoBehaviour:
   - {fileID: 383168898}
   - {fileID: 1373418914}
   backpackZone: {fileID: 1246569063}
-  idLeccion: 1
+  idLeccion: 6
   incorrectAdvice: "\xA1Cuidado! Ese objeto no es seguro para guardar informaci\xF3n
     personal."
   successAdvice: "\xA1Excelente! Sabes qu\xE9 objetos son seguros para proteger tu

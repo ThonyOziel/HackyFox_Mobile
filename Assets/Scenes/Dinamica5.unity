@@ -511,7 +511,7 @@ MonoBehaviour:
   - {fileID: 59259794}
   safeZone: {fileID: 12840102}
   unsafeZone: {fileID: 1306690257}
-  idLeccion: 1
+  idLeccion: 5
   successAdvice: "\xA1Excelente! Sabes identificar qu\xE9 fotos son seguras para
     compartir."
   failureAdvice: "Recuerda: No compartas fotos que muestren informaci\xF3n personal
@@ -1688,6 +1688,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 171837873}
     m_Modifications:
+    - target: {fileID: 1831900161597568060, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_text
+      value: "Lecci\xF3n 5. El viaje de la foto"
+      objectReference: {fileID: 0}
     - target: {fileID: 2580864683316351915, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1767,6 +1771,14 @@ PrefabInstance:
     - target: {fileID: 2580864683316351915, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963792976723194357, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1064.8091
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963792976723194357, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 52.261177
       objectReference: {fileID: 0}
     - target: {fileID: 5724865977951772259, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_Name

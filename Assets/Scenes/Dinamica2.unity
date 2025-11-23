@@ -271,7 +271,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  idLeccion: 1
+  idLeccion: 2
   adviceText: "Esa opci\xF3n no es adecuada para compartir en internet."
 --- !u!114 &44889962 stripped
 MonoBehaviour:
@@ -718,6 +718,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FeedbackPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2407489466511108028, guid: 367a3121f349cba45a5214c68e00f4e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7303197941708445612, guid: 367a3121f349cba45a5214c68e00f4e9, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1088,6 +1092,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2297170}
     m_Modifications:
+    - target: {fileID: 1831900161597568060, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_text
+      value: "Lecci\xF3n 2. Mi Yo Digital\n"
+      objectReference: {fileID: 0}
     - target: {fileID: 2580864683316351915, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1167,6 +1175,14 @@ PrefabInstance:
     - target: {fileID: 2580864683316351915, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963792976723194357, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 971.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963792976723194357, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5.7641
       objectReference: {fileID: 0}
     - target: {fileID: 5724865977951772259, guid: 12da1edc73c2f2e498995019a9009d24, type: 3}
       propertyPath: m_Name
