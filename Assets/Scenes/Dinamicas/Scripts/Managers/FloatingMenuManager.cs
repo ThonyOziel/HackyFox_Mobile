@@ -14,7 +14,7 @@ public class FloatingMenuManager : MonoBehaviour
     public Button btnLecciones;
     public Button btnMascota;
     public Button btnRegresar;
-    public Button btnClose; // Botón X para cerrar (opcional)
+    public Button btnClose;
 
     void Awake()
     {
@@ -44,16 +44,15 @@ public class FloatingMenuManager : MonoBehaviour
             btnRegresar.onClick.AddListener(OnRegresarClicked);
 
         if (btnClose != null)
-            btnClose.onClick.AddListener(CloseMenu);
+            btnClose.onClick.AddListener(OnCloseClicked);
 
         // Ocultar menú al inicio
         if (menuPanel != null)
             menuPanel.SetActive(false);
     }
 
-    /// <summary>
+
     /// Abrir/cerrar el menú
-    /// </summary>
     public void ToggleMenu()
     {
         if (menuPanel != null)
@@ -64,9 +63,8 @@ public class FloatingMenuManager : MonoBehaviour
         }
     }
 
-    /// <summary>
+
     /// Cerrar el menú
-    /// </summary>
     public void CloseMenu()
     {
         if (menuPanel != null)
@@ -76,9 +74,8 @@ public class FloatingMenuManager : MonoBehaviour
         }
     }
 
-    /// <summary>
+
     /// Abrir el menú
-    /// </summary>
     public void OpenMenu()
     {
         if (menuPanel != null)
@@ -92,36 +89,35 @@ public class FloatingMenuManager : MonoBehaviour
     {
         Debug.Log("Botón Usuario presionado");
         CloseMenu();
-
-        // TODO: Cargar escena de usuario/perfil
-        // SceneManager.LoadScene("MenuUsuario");
+        //SceneManager.LoadScene("Home");
     }
 
     void OnLeccionesClicked()
     {
         Debug.Log("Botón Lecciones presionado");
-        CloseMenu();
 
-        // TODO: Cargar escena de lecciones
-        // SceneManager.LoadScene("MenuLecciones");
+
+        //SceneManager.LoadScene("Lecciones"); ;
     }
 
     void OnMascotaClicked()
     {
         Debug.Log("Botón Mascota presionado");
-        CloseMenu();
 
-        // TODO: Cargar escena de mascota/ropa
-        // SceneManager.LoadScene("MenuRopa");
+
+        SceneManager.LoadScene("MenuRopa");
     }
 
     void OnRegresarClicked()
     {
         Debug.Log("Botón Regresar presionado");
-        CloseMenu();
 
-        // TODO: Regresar al menú principal/home
-        // SceneManager.LoadScene("Home");
+    }
+
+    void OnCloseClicked()
+    {
+        Debug.Log("Botón Cerrar presionado");
+        //SceneManager.LoadScene("Lecciones");
     }
 
     void OnDestroy()
@@ -135,6 +131,6 @@ public class FloatingMenuManager : MonoBehaviour
         if (btnRegresar != null)
             btnRegresar.onClick.RemoveListener(OnRegresarClicked);
         if (btnClose != null)
-            btnClose.onClick.RemoveListener(CloseMenu);
+            btnClose.onClick.RemoveListener(OnCloseClicked);
     }
 }

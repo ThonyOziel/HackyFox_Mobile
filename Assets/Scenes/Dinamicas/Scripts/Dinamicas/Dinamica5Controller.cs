@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /// Dinámica 5: Drag & Drop - Identificar fotos seguras
@@ -137,9 +138,8 @@ public class Dinamica5Controller : MonoBehaviour
         // Mostrar feedback de éxito
         if (FeedbackManager.Instance != null)
         {
-            // Modificar el FeedbackManager para mostrar mensaje de éxito también
-            // O crear una pantalla de felicitación
             Debug.Log("Mostrar pantalla de felicitación");
+            SceneManager.LoadScene("GoodFeedBack");
         }
     }
 

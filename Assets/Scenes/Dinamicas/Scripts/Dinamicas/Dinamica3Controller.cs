@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /// Dinámica 3: Detective de Contraseñas - Quiz de casos
@@ -318,12 +319,8 @@ public class Dinamica3Controller : MonoBehaviour
     {
         Debug.Log("¡Todos los casos completados!");
         buttonsEnabled = false;
-
-        // TODO: Guardar progreso en BD
-        Debug.Log("Guardando progreso...");
-
-        // TODO: Mostrar pantalla de felicitación
         Debug.Log("Mostrar pantalla de felicitación");
+       // SceneManager.LoadScene("GoodFeedBack");
     }
 
     void OnBackButtonClicked()
