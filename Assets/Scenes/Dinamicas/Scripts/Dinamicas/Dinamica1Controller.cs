@@ -100,15 +100,24 @@ public class Dinamica1Controller : MonoBehaviour
 
     void OnCorrectAnswer()
     {
-        Debug.Log("BOTÓN CORRECTO PRESIONADO!!!");
-
         if (isAnimating) return;
 
-        Debug.Log("¡Respuesta correcta!");
+        Debug.Log("Respuesta correcta!");
 
-        // TODO: Guardar progreso en BD
-        // TODO: Mostrar pantalla de felicitación
-        // TODO: Avanzar a la siguiente sección
+        // Deshabilitar botones
+        SetButtonsInteractable(false);
+
+        // Guardar progreso en BD
+        if (ProgresoManager.Instance != null)
+        {
+            ProgresoManager.Instance.CompletarDinamica(idLeccion);
+        }
+
+        GoodFeedbackController.Show(
+            lessonId: idLeccion,
+            message: "¡Excelente! Has identificado correctamente el mensaje sospechoso.",
+            nextScene: SceneLoader.MENU_LECCIONES // O la siguiente dinámica
+        );
     }
 
     void OnIncorrectAnswer()
