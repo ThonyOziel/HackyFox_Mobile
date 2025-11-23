@@ -710,6 +710,7 @@ GameObject:
   - component: {fileID: 848324232}
   - component: {fileID: 848324231}
   - component: {fileID: 848324230}
+  - component: {fileID: 848324233}
   m_Layer: 5
   m_Name: Btn_alias
   m_TagString: Untagged
@@ -780,7 +781,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 848324231}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 848324233}
+        m_TargetAssemblyTypeName: AliasMascota, Assembly-CSharp
+        m_MethodName: ConfirmarNombre
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &848324231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,6 +832,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848324228}
   m_CullTransparentMesh: 1
+--- !u!114 &848324233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848324228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fa411333313dd648927ca8342f740a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AliasMascota
+  inputNombreMascota: {fileID: 1399260177}
 --- !u!1 &947143800
 GameObject:
   m_ObjectHideFlags: 0

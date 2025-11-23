@@ -40,8 +40,9 @@ public static class DatosUsuarios
             string correo = col[1];
             string pass = col[2];
             string fecha = col[3];
+            string mascota = col.Length > 4 ? col[4] : "";
 
-            Usuario u = new Usuario(id, correo, pass, fecha);
+            Usuario u = new Usuario(id, correo, pass, fecha, mascota);
             listaUsuarios.Add(u);
         }
 
@@ -52,7 +53,31 @@ public static class DatosUsuarios
     public static void GuardarUsuario(Usuario nuevo)
     {
         string ruta = Path.Combine(Application.streamingAssetsPath, "Tabla_Usuarios.csv");
-        string nuevaLinea = $"{nuevo.id_usuario},{nuevo.correo},{nuevo.contraseña},{nuevo.fecha_registro}";
+
+        // Si el archivo no existe, creamos encabezados
+        if (!File.Exists(ruta))
+        {
+            File.WriteAllText(ruta, "id_usuario,correo,contraseña,fecha_registro,nombre_mascota\n");
+        }
+
+        string nuevaLinea = $"{nuevo.id_usuario},{nuevo.correo},{nuevo.contraseña},{nuevo.fecha_registro},{nuevo.nombre_mascota}";
         File.AppendAllText(ruta, "\n" + nuevaLinea);
+    }
+
+    // Método para actualizar un usuario existente (por ejemplo, nombre de mascota)
+    public static void ActualizarArchivo()
+    {
+        string ruta = Path.Combine(Application.streamingAssetsPath, "Tabla_Usuarios.csv");
+
+        List<string> lineas = new List<string>();
+        lineas.Add("id_usuario,correo,contraseña,fecha_registro,nombre_mascota");
+
+        foreach (Usuario u in listaUsuarios)
+        {
+            string linea = $"{u.id_usuario},{u.correo},{u.contraseña},{u.fecha_registro},{u.nombre_mascota}";
+            lineas.Add(linea);
+        }
+
+        File.WriteAllLines(ruta, lineas.ToArray());
     }
 }

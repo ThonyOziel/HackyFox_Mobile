@@ -5,13 +5,15 @@ public class Usuario
     public string correo;
     public string contraseña;
     public string fecha_registro;
+    public string nombre_mascota;
 
-    public Usuario(int id, string c, string pass, string fecha)
+    public Usuario(int id, string correo, string pass, string fecha, string mascota = "")
     {
-        id_usuario = id;
-        correo = c;
-        contraseña = pass;
-        fecha_registro = fecha;
+        this.id_usuario = id;
+        this.correo = correo;
+        this.contraseña = pass;
+        this.fecha_registro = fecha;
+        this.nombre_mascota = mascota;
     }
 }
 

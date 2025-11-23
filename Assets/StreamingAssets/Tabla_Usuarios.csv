@@ -1,8 +1,7 @@
-﻿id_usuario,correo,contraseña,fecha_registro
-1,rubi@example.com,ClaveSegura123,22/11/2025 20:48
-2,juan@example.com,OtraClave456,21/11/2025 18:30
-3,luis@example.com,MiPass789,20/11/2025 14:15
-4,ana@example.com,ContraseñaAna2025,19/11/2025 09:00
-5,carla@example.com,CarlaClave321,18/11/2025 17:45
-
-6,tejerorubi842@gmail.com,1234,22/11/2025 10:57:17 p. m.
+id_usuario,correo,contraseña,fecha_registro,nombre_mascota
+1,rubi@example.com,ClaveSegura123,22/11/2025 20:48,
+2,juan@example.com,OtraClave456,21/11/2025 18:30,
+3,luis@example.com,MiPass789,20/11/2025 14:15,
+4,ana@example.com,ContraseñaAna2025,19/11/2025 09:00,
+5,carla@example.com,CarlaClave321,18/11/2025 17:45,
+6,tejerorubi842@gmail.com,1234,22/11/2025 10:57:17 p. m.,piñata
