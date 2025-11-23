@@ -10,10 +10,29 @@ public class FoodButton : MonoBehaviour
     [Header("Mascota")]
     public PetEat mascotaEat;
 
+    [Header("Visual")]
+    private SpriteRenderer buttonRenderer;
+    private Color originalColor;
+
+    void Start()
+    {
+        // Asume que el SpriteRenderer está en el mismo GameObject
+        buttonRenderer = GetComponent<SpriteRenderer>();
+        if (buttonRenderer != null)
+            originalColor = buttonRenderer.color;
+    }
+
     void OnMouseDown()
     {
+        // Efecto visual de apretado: baja saturación y contraste
+        if (buttonRenderer != null)
+            buttonRenderer.color = new Color(0.6f, 0.6f, 0.6f, 1f); // gris tenue
+
         // La mascota cierra los ojos
         mascotaEat.Comer(0.5f);
+
+        //interrumpe cadena de salto
+        FindObjectOfType<PetJump>().ResetJumpCounter();
 
         // Rellenar la barra de comida
         if (foodBarManager != null)
@@ -30,7 +49,7 @@ public class FoodButton : MonoBehaviour
         SpriteRenderer sr = apple.AddComponent<SpriteRenderer>();
         sr.sprite = appleSprite;
         sr.color = Color.white;
-        sr.sortingOrder = 1;
+        sr.sortingOrder = 2;
 
         // Sonido cartoon
         AudioSource audio = apple.AddComponent<AudioSource>();
@@ -40,5 +59,12 @@ public class FoodButton : MonoBehaviour
         // Comportamiento de agitación + desvanecimiento
         AppleBehavior behavior = apple.AddComponent<AppleBehavior>();
         behavior.StartShakeAndFade();
+    }
+
+    void OnMouseUp()
+    {
+        // Restaurar color original al soltar
+        if (buttonRenderer != null)
+            buttonRenderer.color = originalColor;
     }
 }

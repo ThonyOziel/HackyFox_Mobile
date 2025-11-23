@@ -11,12 +11,21 @@ public class ConsejoBtn : MonoBehaviour
     public AudioClip sonidoConsejo;       // Clip de sonido
     string nombreArchivo = "TablaFrases.csv";
     private List<string> frases = new List<string>();
+    [Header("Visual")]
+    private SpriteRenderer buttonRenderer;
+    private Color originalColor;
 
     void Start()
     {
         CargarFrases();
         globoTextoGO.SetActive(false);              // Oculta el globo
         globoTexto.gameObject.SetActive(false);     // Oculta el texto
+
+        //SpriteRenderer feedback visual
+        buttonRenderer = GetComponent<SpriteRenderer>();
+        if (buttonRenderer != null)
+            originalColor = buttonRenderer.color;
+
     }
 
     void CargarFrases()
@@ -52,6 +61,9 @@ public class ConsejoBtn : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(OcultarGloboTrasTiempo());
+
+        //interrumpe cadena de salto
+        FindObjectOfType<PetJump>().ResetJumpCounter();
     }
 
     IEnumerator OcultarGloboTrasTiempo()
@@ -64,6 +76,16 @@ public class ConsejoBtn : MonoBehaviour
 
     void OnMouseDown()
     {
+        // Efecto visual de apretado: baja saturación y contraste
+        if (buttonRenderer != null)
+            buttonRenderer.color = new Color(0.6f, 0.6f, 0.6f, 1f); // gris tenue 
         MostrarConsejo();
+    }
+
+    void OnMouseUp()
+    {
+        // Restaurar color original al soltar
+        if (buttonRenderer != null)
+            buttonRenderer.color = originalColor;
     }
 }

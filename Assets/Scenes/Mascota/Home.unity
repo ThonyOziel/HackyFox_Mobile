@@ -458,7 +458,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4.9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -483,7 +483,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03, y: 1.09, z: -10}
+  m_LocalPosition: {x: -0, y: 1.22, z: -10}
   m_LocalScale: {x: 1.7365066, y: 1.7365066, z: 1.7365066}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -831,7 +831,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 7293598183456022363, guid: 6dec54bbae833d447bb26177f27f8161, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -897,17 +897,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Consejo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 58d74df2796102b47889ed9d0ecc6652, type: 2}
+  m_sharedMaterial: {fileID: -7516022391644151349, guid: 58d74df2796102b47889ed9d0ecc6652, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4284647893
+  m_fontColor: {r: 0.83396226, g: 0.53732663, b: 0.38236377, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -924,7 +924,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.35
+  m_fontSize: 69.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1450,6 +1450,10 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: 178bd55a1fb0c854b99df8baedfcf56c, type: 3}
   hackystill: {fileID: -6123346432275029798, guid: 6b183db4dff0ef84db14a4da57cd8f10, type: 3}
   jumpSprite: {fileID: -3884069552359842562, guid: 7654c365936e3fe488b3aeacb5c0d960, type: 3}
+  jumpThreshold: 10
+  specialJumpHeight: 10
+  specialJumpDuration: 0.3
+  miniGameSceneName: MiniGame
   foodBarManager: {fileID: 1505171173}
 --- !u!114 &1604665980
 MonoBehaviour:

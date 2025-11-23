@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/test/thisPractice.unity
     guid: 83a2f32263bcd4c49b0281509191c5fa
+  - enabled: 1
+    path: Assets/Scenes/GoodFeedBack/GoodFeedBack.unity
+    guid: c0a025e468706b2458f4878abe75a677
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/MiniGame.unity
+    guid: 832a85b82319dd84b8c31653d2bb7c61
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
