@@ -27,8 +27,29 @@ public class Registro : MonoBehaviour
             return;
         }
 
+        // ?? Evitar registros duplicados
+        if (DatosUsuarios.listaUsuarios.Exists(u => u.correo == usuario))
+        {
+            Debug.Log("Este correo ya está registrado.");
+            return;
+        }
+
+        // Crear nuevo usuario
+        Usuario nuevo = new Usuario(
+            DatosUsuarios.listaUsuarios.Count + 1,
+            usuario,
+            contrasena,
+            System.DateTime.Now.ToString()
+        );
+
+        // Guardar en la "base de datos"
+        DatosUsuarios.listaUsuarios.Add(nuevo);
+        DatosUsuarios.GuardarUsuario(nuevo);
+
         Debug.Log("Registro completado.");
-        // Aquí luego guardaremos en base de datos si quieres
+
+        // ?? Mandar al Home
+        SceneManager.LoadScene("Home");
     }
 
     public void Volver()
@@ -36,4 +57,5 @@ public class Registro : MonoBehaviour
         SceneManager.LoadScene("Bienvenida");
     }
 }
+
 

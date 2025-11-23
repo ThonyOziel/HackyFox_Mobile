@@ -13,16 +13,28 @@ public class InicioDeSesion : MonoBehaviour
         string usuario = inputUsuario.text;
         string contrasena = inputContrasena.text;
 
-        // Validación simple (luego conectamos con tu BD si quieres)
+        // Validación simple
         if (usuario == "" || contrasena == "")
         {
             Debug.Log("Debe completar todos los campos.");
             return;
         }
 
+        
+        var user = DatosUsuarios.listaUsuarios.Find(u =>
+            u.correo == usuario && u.contraseña == contrasena
+        );
+
+        if (user == null)
+        {
+            Debug.Log("Revisa que tu usuario y contraseña sean correctos.");
+            return;
+        }
+
         Debug.Log("Inicio de sesión exitoso.");
-        // Cambia a otra escena si corresponde
-        // SceneManager.LoadScene("NombreEscenaPrincipal");
+
+       
+        SceneManager.LoadScene("Home");
     }
 
     public void Volver()
@@ -30,4 +42,5 @@ public class InicioDeSesion : MonoBehaviour
         SceneManager.LoadScene("Bienvenida");
     }
 }
+
 
