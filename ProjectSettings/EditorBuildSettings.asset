@@ -44,6 +44,27 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/login/Alias.unity
     guid: c1d18cec8f21a7f49b738fedf56dd7c4
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/Dinamica1.unity
+    guid: 369627162c7b95a409b886bc8cfda84f
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/MenuRopa.unity
+    guid: 1d7b76ee647a7704ca3fd0702a10257c
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/Dinamica2.unity
+    guid: 8071f21ba9209e546b3bb1cdfe4e7d5c
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/Dinamica6.unity
+    guid: 68133de66dbeb584cbff71b3ae984f4b
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/Dinamica5.unity
+    guid: 8ff4ba04676817040abac662e6f833f6
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/Dinamica4.unity
+    guid: 70bb96e839bec0f4699237cca8b8fe91
+  - enabled: 1
+    path: Assets/Scenes/Dinamicas/Dinamica3.unity
+    guid: 9ccb7f627fbac8b40bec825d78fc8822
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
