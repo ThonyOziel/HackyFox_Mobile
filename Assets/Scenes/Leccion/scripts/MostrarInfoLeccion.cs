@@ -4,6 +4,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MostrarInfoLeccion : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public class MostrarInfoLeccion : MonoBehaviour
     public TMP_Text infoTMP;
     public TMP_Text consejoTMP;
 
+    [Header("Botones de navegación")]
+    public Button BtnRegresar_0;          // Regresa a pantalla Lecciones
+    public Button FeedBackContinuarBtn_0; // Avanza a RetoRelampago
+
     [Header("Archivo CSV")]
     public string nombreArchivo = "TablaLecciones.csv";
 
@@ -22,7 +28,40 @@ public class MostrarInfoLeccion : MonoBehaviour
     void Start()
     {
         CargarLecciones();
-        StartCoroutine(DemoRecorrido()); // inicia la demostraci�n autom�tica
+        StartCoroutine(DemoRecorrido());
+
+        ConfigurarBotones();
+    }
+
+    void ConfigurarBotones()
+    {
+        if (BtnRegresar_0 != null)
+        {
+            BtnRegresar_0.onClick.RemoveAllListeners();
+            BtnRegresar_0.onClick.AddListener(() =>
+            {
+                Debug.Log("BtnRegresar_0 presionado → Cargando escena Lecciones");
+                SceneManager.LoadScene("Lecciones");
+            });
+        }
+        else
+        {
+            Debug.LogError("BtnRegresar_0 no está asignado en el Inspector");
+        }
+
+        if (FeedBackContinuarBtn_0 != null)
+        {
+            FeedBackContinuarBtn_0.onClick.RemoveAllListeners();
+            FeedBackContinuarBtn_0.onClick.AddListener(() =>
+            {
+                Debug.Log("FeedBackContinuarBtn_0 presionado → Cargando escena RetoRelampago");
+                SceneManager.LoadScene("RetoRelampago");
+            });
+        }
+        else
+        {
+            Debug.LogError("FeedBackContinuarBtn_0 no está asignado en el Inspector");
+        }
     }
 
     void CargarLecciones()
@@ -51,8 +90,8 @@ public class MostrarInfoLeccion : MonoBehaviour
         for (int i = 0; i < todasLasLecciones.Count; i++)
         {
             ActualizarTextos(todasLasLecciones[i]);
-            Debug.Log($"Mostrando lecci�n #{i + 1}: {nomLeccionTMP.text}");
-            yield return new WaitForSeconds(2f); // espera 2 segundos antes de pasar a la siguiente
+            Debug.Log($"Mostrando lección #{i + 1}: {nomLeccionTMP.text}");
+            yield return new WaitForSeconds(2f);
         }
     }
 

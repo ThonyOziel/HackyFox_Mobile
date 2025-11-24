@@ -552,7 +552,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Reto rel\xE1mpago"
+  m_text: Reto
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
   m_sharedMaterial: {fileID: -3911333956340217941, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
@@ -998,7 +998,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xA1Cuidado!"
+  m_text: Dinamica
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
   m_sharedMaterial: {fileID: -3911333956340217941, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
@@ -1487,7 +1487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xBFQu\xE9 es ciberseguridad? "
+  m_text: Teoria
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
   m_sharedMaterial: {fileID: -3911333956340217941, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
@@ -2117,7 +2117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Lecci\xF3n 1"
+  m_text: Titulo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 64586cf3306627449a4e9e60b1b06d1e, type: 2}
   m_sharedMaterial: {fileID: -9161697147024345447, guid: 64586cf3306627449a4e9e60b1b06d1e, type: 2}
@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Conceptos de ciberseguridad
+  m_text: Subtitulo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
   m_sharedMaterial: {fileID: -3911333956340217941, guid: fb21c345c1b16c14e8331af916a6c991, type: 2}
@@ -2466,6 +2466,14 @@ MonoBehaviour:
   PanelTextBloq: {fileID: 1006047165}
   TextBloq: {fileID: 22649267}
   BtnCerrarPanel: {fileID: 253464990}
+  BtnRegresar: {fileID: 3707966}
+  TituloTMP: {fileID: 2014788095}
+  SubtituloTMP: {fileID: 2026874903}
+  TeoriaTMP: {fileID: 1295587623}
+  RetoTMP: {fileID: 255148281}
+  DinamicaTMP: {fileID: 758284745}
+  nombreArchivo: TablaMenuLeccion.csv
+  idLeccionActual: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

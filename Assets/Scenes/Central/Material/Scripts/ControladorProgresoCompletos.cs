@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class ControladorProgresoCompleto : MonoBehaviour
 {
@@ -23,6 +22,8 @@ public class ControladorProgresoCompleto : MonoBehaviour
     public ProgresoUI[] progresos;
     public float duracionFade = 0.6f;
 
+    private const float PROGRESO_MAX = 16.5f;
+
     void Start()
     {
         if (BtnRegresar != null)
@@ -38,29 +39,24 @@ public class ControladorProgresoCompleto : MonoBehaviour
             ? true
             : EstaLeccionTerminada(p.idLeccion - 1);
 
-        int avLecc  = PlayerPrefs.GetInt($"AvanceLeccion{p.idLeccion}", 0);
-        int avRelam = PlayerPrefs.GetInt($"AvanceRelampago{p.idLeccion}", 0);
-        int avDin   = PlayerPrefs.GetInt($"AvanceDinamica{p.idLeccion}", 0);
-        int total   = Mathf.Clamp(avLecc + avRelam + avDin, 0, 100);
-        float prog  = total / 100f;
+        float avLecc  = PlayerPrefs.GetFloat($"AvanceLeccion{p.idLeccion}", 0f);
+        float avRelam = PlayerPrefs.GetFloat($"AvanceRelampago{p.idLeccion}", 0f);
+        float avDin   = PlayerPrefs.GetFloat($"AvanceDinamica{p.idLeccion}", 0f);
+        float total   = Mathf.Clamp(avLecc + avRelam + avDin, 0f, PROGRESO_MAX);
+        float prog    = total / PROGRESO_MAX;
 
-        // Mostrar la fila
         if (p.BarraLeccion != null)
             p.BarraLeccion.SetActive(true);
 
-        // Ocultar contenido desplegable por defecto
         if (p.ContenidoBarra != null)
             p.ContenidoBarra.SetActive(false);
 
-        // Flecha visible solo si la lección está desbloqueada
         if (p.FlechaDesplegable != null)
             p.FlechaDesplegable.gameObject.SetActive(anteriorTerminada);
 
-        // Rotación inicial de flecha
         if (p.FlechaIcono != null)
             p.FlechaIcono.localRotation = Quaternion.Euler(0, 0, 180f);
 
-        // Click de flecha
         if (p.FlechaDesplegable != null)
         {
             p.FlechaDesplegable.onClick.RemoveAllListeners();
@@ -77,7 +73,6 @@ public class ControladorProgresoCompleto : MonoBehaviour
             });
         }
 
-        // Actualizar barra de progreso
         if (p.BarraAmarilla != null)
         {
             Vector3 escala = p.BarraAmarilla.localScale;
@@ -85,17 +80,16 @@ public class ControladorProgresoCompleto : MonoBehaviour
             p.BarraAmarilla.localScale = escala;
         }
 
-        // CandadoProgresoX: visible si la anterior NO está terminada
         SetAlpha(p.CandadoProgreso, anteriorTerminada ? 0f : 1f);
     }
 
     bool EstaLeccionTerminada(int idLeccion)
     {
-        int avLecc  = PlayerPrefs.GetInt($"AvanceLeccion{idLeccion}", 0);
-        int avRelam = PlayerPrefs.GetInt($"AvanceRelampago{idLeccion}", 0);
-        int avDin   = PlayerPrefs.GetInt($"AvanceDinamica{idLeccion}", 0);
-        int total   = Mathf.Clamp(avLecc + avRelam + avDin, 0, 100);
-        return total >= 100;
+        float avLecc  = PlayerPrefs.GetFloat($"AvanceLeccion{idLeccion}", 0f);
+        float avRelam = PlayerPrefs.GetFloat($"AvanceRelampago{idLeccion}", 0f);
+        float avDin   = PlayerPrefs.GetFloat($"AvanceDinamica{idLeccion}", 0f);
+        float total   = Mathf.Clamp(avLecc + avRelam + avDin, 0f, PROGRESO_MAX);
+        return total >= PROGRESO_MAX;
     }
 
     void SetAlpha(CanvasGroup cg, float a)

@@ -13,20 +13,20 @@ public class ControladorPerfilProgreso : MonoBehaviour
         public GameObject ContenidoBarra;
         public RectTransform FlechaIcono;
         public Transform BarraAmarilla;
-
         public CanvasGroup CandadoProgreso;
         public CanvasGroup CandadoLeccion;
         public CanvasGroup MedallaLeccion;
-
         public int idLeccion;
     }
 
-    [Header("Botones de navegación")]
     public Button BtnVerTodoMedallas;
     public Button BtnVerTodoProgresos;
+    public Button BtnInicio;
 
     public LeccionUI[] lecciones;
     public float duracionFade = 0.6f;
+
+    private const float PROGRESO_MAX = 16.5f;
 
     void Start()
     {
@@ -35,6 +35,9 @@ public class ControladorPerfilProgreso : MonoBehaviour
 
         if (BtnVerTodoProgresos != null)
             BtnVerTodoProgresos.onClick.AddListener(IrAVerTodoProgresos);
+
+        if (BtnInicio != null)
+            BtnInicio.onClick.AddListener(IrAHome);
 
         for (int i = 0; i < lecciones.Length; i++)
             ConfigurarLeccion(lecciones[i]);
@@ -46,12 +49,12 @@ public class ControladorPerfilProgreso : MonoBehaviour
             ? true
             : EstaLeccionTerminada(leccion.idLeccion - 1);
 
-        int avLecc  = PlayerPrefs.GetInt($"AvanceLeccion{leccion.idLeccion}", 0);
-        int avRelam = PlayerPrefs.GetInt($"AvanceRelampago{leccion.idLeccion}", 0);
-        int avDin   = PlayerPrefs.GetInt($"AvanceDinamica{leccion.idLeccion}", 0);
-        int total   = Mathf.Clamp(avLecc + avRelam + avDin, 0, 100);
-        float prog  = total / 100f;
-        bool estaTerminada = total >= 100;
+        float avLecc  = PlayerPrefs.GetFloat($"AvanceLeccion{leccion.idLeccion}", 0f);
+        float avRelam = PlayerPrefs.GetFloat($"AvanceRelampago{leccion.idLeccion}", 0f);
+        float avDin   = PlayerPrefs.GetFloat($"AvanceDinamica{leccion.idLeccion}", 0f);
+        float total   = Mathf.Clamp(avLecc + avRelam + avDin, 0f, PROGRESO_MAX);
+        float prog    = total / PROGRESO_MAX;
+        bool estaTerminada = total >= PROGRESO_MAX;
 
         leccion.BarraLeccion.SetActive(true);
         leccion.ContenidoBarra.SetActive(false);
@@ -73,9 +76,13 @@ public class ControladorPerfilProgreso : MonoBehaviour
                 leccion.FlechaIcono.localRotation = Quaternion.Euler(0, 0, activo ? 0f : 180f);
         });
 
-        Vector3 escala = leccion.BarraAmarilla.localScale;
-        escala.x = prog;
-        leccion.BarraAmarilla.localScale = escala;
+        // Actualiza barra (0..1)
+        if (leccion.BarraAmarilla != null)
+        {
+            Vector3 escala = leccion.BarraAmarilla.localScale;
+            escala.x = prog;
+            leccion.BarraAmarilla.localScale = escala;
+        }
 
         SetAlpha(leccion.CandadoProgreso, anteriorTerminada ? 0f : 1f);
         SetAlpha(leccion.CandadoLeccion, estaTerminada ? 0f : 1f);
@@ -87,11 +94,11 @@ public class ControladorPerfilProgreso : MonoBehaviour
 
     bool EstaLeccionTerminada(int idLeccion)
     {
-        int avLecc  = PlayerPrefs.GetInt($"AvanceLeccion{idLeccion}", 0);
-        int avRelam = PlayerPrefs.GetInt($"AvanceRelampago{idLeccion}", 0);
-        int avDin   = PlayerPrefs.GetInt($"AvanceDinamica{idLeccion}", 0);
-        int total   = Mathf.Clamp(avLecc + avRelam + avDin, 0, 100);
-        return total >= 100;
+        float avLecc  = PlayerPrefs.GetFloat($"AvanceLeccion{idLeccion}", 0f);
+        float avRelam = PlayerPrefs.GetFloat($"AvanceRelampago{idLeccion}", 0f);
+        float avDin   = PlayerPrefs.GetFloat($"AvanceDinamica{idLeccion}", 0f);
+        float total   = Mathf.Clamp(avLecc + avRelam + avDin, 0f, PROGRESO_MAX);
+        return total >= PROGRESO_MAX;
     }
 
     IEnumerator FadeCandadoLeccionAHaciaMedalla(LeccionUI leccion)
@@ -128,5 +135,10 @@ public class ControladorPerfilProgreso : MonoBehaviour
     public void IrAVerTodoProgresos()
     {
         SceneManager.LoadScene("Scenes/Central/ProgresoCompleto");
+    }
+
+    public void IrAHome()
+    {
+        SceneManager.LoadScene("Home");
     }
 }

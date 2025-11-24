@@ -7,14 +7,14 @@ using UnityEngine.UI;
 public class Dinamica1Controller : MonoBehaviour
 {
     [Header("UI References")]
-    public GameObject phoneObject;           // El objeto phone_0
-    public Button correctButton;             // BotÛn correcto
-    public Button incorrectButton;           // BotÛn incorrecto
-    public Button backButton;                // BotÛn de regresar
+    public GameObject phoneObject;
+    public Button correctButton;
+    public Button incorrectButton;
+    public Button backButton;
 
     [Header("Texts")]
-    public TextMeshProUGUI questionTitle;    // TÌtulo "°CUIDADO!"
-    public TextMeshProUGUI questionText;     // Pregunta
+    public TextMeshProUGUI questionTitle;
+    public TextMeshProUGUI questionText;
 
     [Header("Animation Settings")]
     public float animationDuration = 1f;
@@ -22,7 +22,7 @@ public class Dinamica1Controller : MonoBehaviour
 
     [Header("Lesson Data")]
     public int idLeccion = 1;
-    public string adviceText = "Recuerda que tu informaciÛn personal no debes compartirla con nadie en internet!";
+    public string adviceText = "Recuerda que tu informaci√≥n personal no debes compartirla con nadie en internet!";
 
     private Vector3 phoneStartPosition;
     private Vector3 phoneTargetPosition;
@@ -30,53 +30,24 @@ public class Dinamica1Controller : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("?? Dinamica1Controller - Start iniciado");
+        Debug.Log("‚úÖ Dinamica1Controller - Start iniciado");
 
-        // Configurar posiciones para animaciÛn
         if (phoneObject != null)
         {
             phoneTargetPosition = phoneObject.transform.localPosition;
             phoneStartPosition = new Vector3(phoneTargetPosition.x, phoneTargetPosition.y - 2000f, phoneTargetPosition.z);
             phoneObject.transform.localPosition = phoneStartPosition;
-            Debug.Log("TelÈfono configurado");
-        }
-        else
-        {
-            Debug.LogError("phoneObject es NULL");
         }
 
-        // Asignar listeners a los botones
         if (correctButton != null)
-        {
             correctButton.onClick.AddListener(OnCorrectAnswer);
-            Debug.Log("Listener agregado a correctButton");
-        }
-        else
-        {
-            Debug.LogError("correctButton es NULL");
-        }
 
         if (incorrectButton != null)
-        {
             incorrectButton.onClick.AddListener(OnIncorrectAnswer);
-            Debug.Log("? Listener agregado a incorrectButton");
-        }
-        else
-        {
-            Debug.LogError("? incorrectButton es NULL");
-        }
 
         if (backButton != null)
-        {
             backButton.onClick.AddListener(OnBackButtonClicked);
-            Debug.Log("Listener agregado a backButton");
-        }
-        else
-        {
-            Debug.LogError("backButton es NULL");
-        }
 
-        // Iniciar animaciÛn del telÈfono
         StartCoroutine(AnimatePhone());
     }
 
@@ -101,46 +72,27 @@ public class Dinamica1Controller : MonoBehaviour
 
     void OnCorrectAnswer()
     {
-        Debug.Log("BOT”N CORRECTO PRESIONADO!!!");
-
         if (isAnimating) return;
-
-        Debug.Log("°Respuesta correcta!");
-        SceneManager.LoadScene("GoodFeedBack"); // carga escena
+        SceneManager.LoadScene("GoodFeedBack");
     }
 
     void OnIncorrectAnswer()
     {
-        Debug.Log("BOT”N INCORRECTO PRESIONADO!!!");
-
         if (isAnimating) return;
 
-        Debug.Log("Respuesta incorrecta - BotÛn presionado");
-
-        // Verificar que el FeedbackManager existe
         if (FeedbackManager.Instance == null)
         {
-            Debug.LogError("FeedbackManager.Instance es NULL! Aseg˙rate de tener el FeedbackManager en la escena.");
+            Debug.LogError("FeedbackManager.Instance es NULL!");
             return;
         }
 
-        Debug.Log("feedbackManager encontrado, mostrando feedback...");
-
-        // Llamar al FeedbackManager global
         FeedbackManager.Instance.ShowFeedback(adviceText, OnRetry);
-
-        // Deshabilitar botones mientras se muestra el feedback
         SetButtonsInteractable(false);
     }
 
     void OnRetry()
     {
-        // Esta funciÛn se ejecuta cuando el usuario presiona "Intentarlo de nuevo"
-
-        // Rehabilitar botones
         SetButtonsInteractable(true);
-
-        // Reiniciar animaciÛn del telÈfono
         phoneObject.transform.localPosition = phoneStartPosition;
         StartCoroutine(AnimatePhone());
     }
@@ -155,15 +107,12 @@ public class Dinamica1Controller : MonoBehaviour
 
     void OnBackButtonClicked()
     {
-        // TODO: Mostrar di·logo de confirmaciÛn
-        Debug.Log("Usuario quiere regresar - mostrar confirmaciÛn");
-
-        // Si confirma, regresar al men˙ sin guardar progreso
+        Debug.Log("Usuario quiere regresar a Lecciones");
+        SceneManager.LoadScene("Lecciones"); // ‚Üê Regresa a la pantalla de Lecciones
     }
 
     void OnDestroy()
     {
-        // Limpiar listeners
         if (correctButton != null)
             correctButton.onClick.RemoveListener(OnCorrectAnswer);
         if (incorrectButton != null)

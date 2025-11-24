@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfab39c8a46dae4f88afb809b621357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloatingMenuManager
-  menuPanel: {fileID: 0}
+  menuPanel: {fileID: 5469974835314310675}
   btnUsuario: {fileID: 0}
   btnLecciones: {fileID: 0}
   btnMascota: {fileID: 0}

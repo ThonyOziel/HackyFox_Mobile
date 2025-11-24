@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class ControladorMedallasCompleto : MonoBehaviour
 {
@@ -19,39 +18,28 @@ public class ControladorMedallasCompleto : MonoBehaviour
     [Header("Botón para regresar")]
     public Button BtnRegresar;
 
+    private const float PROGRESO_MAX = 16.5f;
+
     void Start()
     {
-        // Conectar botón regresar
         if (BtnRegresar != null)
             BtnRegresar.onClick.AddListener(RegresarAPerfilProgreso);
 
         foreach (var medalla in medallas)
-        {
             ConfigurarMedalla(medalla);
-        }
     }
 
     void ConfigurarMedalla(MedallaUI medalla)
     {
-        int leccionAvance = PlayerPrefs.GetInt($"AvanceLeccion{medalla.idLeccion}", 0);
-        int relampagoAvance = PlayerPrefs.GetInt($"AvanceRelampago{medalla.idLeccion}", 0);
-        int dinamicaAvance = PlayerPrefs.GetInt($"AvanceDinamica{medalla.idLeccion}", 0);
+        float avLecc  = PlayerPrefs.GetFloat($"AvanceLeccion{medalla.idLeccion}", 0f);
+        float avRelam = PlayerPrefs.GetFloat($"AvanceRelampago{medalla.idLeccion}", 0f);
+        float avDin   = PlayerPrefs.GetFloat($"AvanceDinamica{medalla.idLeccion}", 0f);
 
-        int total = Mathf.Clamp(leccionAvance + relampagoAvance + dinamicaAvance, 0, 100);
-        bool completada = total >= 100;
+        float total = Mathf.Clamp(avLecc + avRelam + avDin, 0f, PROGRESO_MAX);
+        bool completada = total >= PROGRESO_MAX;
 
-        if (completada)
-        {
-            // Mostrar directamente la medalla sin animación
-            SetAlpha(medalla.ImagenCandado, 0f);
-            SetAlpha(medalla.ImagenMedalla, 1f);
-        }
-        else
-        {
-            // Mostrar directamente el candado sin animación
-            SetAlpha(medalla.ImagenCandado, 1f);
-            SetAlpha(medalla.ImagenMedalla, 0f);
-        }
+        SetAlpha(medalla.ImagenCandado, completada ? 0f : 1f);
+        SetAlpha(medalla.ImagenMedalla, completada ? 1f : 0f);
     }
 
     void SetAlpha(CanvasGroup cg, float a)
@@ -62,7 +50,6 @@ public class ControladorMedallasCompleto : MonoBehaviour
         cg.blocksRaycasts = false;
     }
 
-    // ✅ Navegación hacia la pestaña PerfilProgreso (ruta completa)
     void RegresarAPerfilProgreso()
     {
         SceneManager.LoadScene("Scenes/Central/PerfilProgreso");

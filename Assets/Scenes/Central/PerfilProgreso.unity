@@ -524,6 +524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ControladorPerfilProgreso
   BtnVerTodoMedallas: {fileID: 899847471}
   BtnVerTodoProgresos: {fileID: 1170948684}
+  BtnInicio: {fileID: 1025650887}
   lecciones:
   - BarraLeccion: {fileID: 1345578639}
     FlechaDesplegable: {fileID: 658691854}
