@@ -5,7 +5,6 @@ using TMPro;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System;
 
 public class ControladorLeccion : MonoBehaviour
 {
@@ -61,8 +60,6 @@ public class ControladorLeccion : MonoBehaviour
         CargarLecciones();
         MostrarLeccionPorID(idLeccionActual);
         ActualizarEstadoFilas();
-
-        VerificarCooldownYAvanceSiguienteLeccion();
     }
 
     void CargarLecciones()
@@ -111,6 +108,8 @@ public class ControladorLeccion : MonoBehaviour
         PlayerPrefs.SetFloat($"AvanceLeccion{idLeccionActual}", avLecc);
         PlayerPrefs.Save();
 
+        IncrementarContadorModulos(idLeccionActual);
+
         Debug.Log($"Progreso teoría L{idLeccionActual}: {avLecc}/{PROGRESO_MAX}");
 
         ActualizarEstadoFilas();
@@ -132,6 +131,8 @@ public class ControladorLeccion : MonoBehaviour
         PlayerPrefs.SetFloat($"AvanceRelampago{idLeccionActual}", avRelam);
         PlayerPrefs.Save();
 
+        IncrementarContadorModulos(idLeccionActual);
+
         Debug.Log($"Progreso reto L{idLeccionActual}: {avRelam}/{PROGRESO_MAX}");
 
         ActualizarEstadoFilas();
@@ -141,24 +142,42 @@ public class ControladorLeccion : MonoBehaviour
     }
 
     void AccionDinamica()
+{
+    if (!LeccionDesbloqueadaParaDinamica())
     {
-        if (!LeccionDesbloqueadaParaDinamica())
-        {
-            MostrarBloqueo("Debes completar el reto primero");
-            return;
-        }
-
-        float avDin = PlayerPrefs.GetFloat($"AvanceDinamica{idLeccionActual}", 0f);
-        avDin = Mathf.Min(avDin + VALOR_MODULO, PROGRESO_MAX);
-        PlayerPrefs.SetFloat($"AvanceDinamica{idLeccionActual}", avDin);
-        PlayerPrefs.Save();
-
-        Debug.Log($"Progreso dinámica L{idLeccionActual}: {avDin}/{PROGRESO_MAX}");
-
-        SceneManager.LoadScene("Dinamica1");
-
-        RevisarFinalizacionLeccion();
+        MostrarBloqueo("Debes completar el reto primero");
+        return;
     }
+
+    float avDin = PlayerPrefs.GetFloat($"AvanceDinamica{idLeccionActual}", 0f);
+    avDin = Mathf.Min(avDin + VALOR_MODULO, PROGRESO_MAX);
+    PlayerPrefs.SetFloat($"AvanceDinamica{idLeccionActual}", avDin);
+    PlayerPrefs.Save();
+
+    IncrementarContadorModulos(idLeccionActual);
+
+    Debug.Log($"Progreso dinámica L{idLeccionActual}: {avDin}/{PROGRESO_MAX}");
+    
+    RevisarFinalizacionLeccion();
+
+    if (GetContadorModulos(idLeccionActual) >= 3 && idLeccionActual < 6)
+    {
+        idLeccionActual++;
+        PlayerPrefs.SetInt("LeccionActual", idLeccionActual); // guardar referencia global
+        PlayerPrefs.SetInt($"ContadorModulos{idLeccionActual}", 0); // reiniciar contador
+
+        MostrarLeccionPorID(idLeccionActual);   // refresca teoría, reto y dinámica
+        ActualizarEstadoFilas();
+
+        Debug.Log($"MenuLeccion actualizado a la lección {idLeccionActual}");
+    }
+    else if (idLeccionActual >= 6)
+    {
+        Debug.Log("Última lección completada. Fin del recorrido.");
+    }
+
+}
+
 
     bool LeccionDesbloqueadaParaReto()
     {
@@ -173,25 +192,45 @@ public class ControladorLeccion : MonoBehaviour
     }
 
     void RevisarFinalizacionLeccion()
+{
+    int contador = GetContadorModulos(idLeccionActual);
+    float total = GetTotalProgreso(idLeccionActual);
+
+    Debug.Log($"Contador modular L{idLeccionActual}: {contador}/3");
+
+    if (contador >= 3 && total >= PROGRESO_MAX)
     {
-        float total = GetTotalProgreso(idLeccionActual);
-        if (total >= PROGRESO_MAX)
+        PlayerPrefs.SetFloat($"TotalLeccion{idLeccionActual}", PROGRESO_MAX);
+        PlayerPrefs.SetInt($"Leccion{idLeccionActual}Completa", 1);
+        PlayerPrefs.Save();
+
+        var bar = UnityEngine.Object.FindFirstObjectByType<LeccionBarManager>();
+        if (bar != null)
         {
-            PlayerPrefs.SetFloat($"TotalLeccion{idLeccionActual}", PROGRESO_MAX);
-            PlayerPrefs.SetInt($"Leccion{idLeccionActual}Completa", 1);
-            PlayerPrefs.Save();
+            bar.StartCooldown();
+            Debug.Log($"Cooldown 24h iniciado para L{idLeccionActual}");
+        }
 
-            var bar = UnityEngine.Object.FindFirstObjectByType<LeccionBarManager>();
+        Debug.Log($"Lección {idLeccionActual} completada (100%)");
 
-            if (bar != null)
-            {
-                bar.StartCooldown();
-                Debug.Log($"Cooldown 24h iniciado para L{idLeccionActual}");
-            }
+        if (idLeccionActual < 6)
+        {
+            idLeccionActual++;
+            PlayerPrefs.SetInt("LeccionActual", idLeccionActual); // guardar referencia
+            PlayerPrefs.SetInt($"ContadorModulos{idLeccionActual}", 0); // reiniciar contador
 
-            Debug.Log($"Lección {idLeccionActual} completada (100%)");
+            MostrarLeccionPorID(idLeccionActual);   // refresca teoría, reto y dinámica
+            ActualizarEstadoFilas();
+
+            Debug.Log($"Avanzando automáticamente a la lección {idLeccionActual}");
+        }
+        else
+        {
+            Debug.Log("Última lección completada. Fin del recorrido.");
         }
     }
+}
+
 
     float GetTotalProgreso(int id)
     {
@@ -201,13 +240,26 @@ public class ControladorLeccion : MonoBehaviour
         return Mathf.Clamp(avLecc + avRelam + avDin, 0f, PROGRESO_MAX);
     }
 
+    int GetContadorModulos(int id)
+    {
+        return PlayerPrefs.GetInt($"ContadorModulos{id}", 0);
+    }
+
+    void IncrementarContadorModulos(int id)
+    {
+        int actual = GetContadorModulos(id);
+        actual = Mathf.Min(actual + 1, 3); // máximo 3 apartados
+        PlayerPrefs.SetInt($"ContadorModulos{id}", actual);
+        PlayerPrefs.Save();
+    }
+
     void MostrarBloqueo(string mensaje)
     {
         PanelTextBloq.SetActive(true);
         TextBloq.text = mensaje;
     }
 
-    void ActualizarEstadoFilas()
+        void ActualizarEstadoFilas()
     {
         BtnFilaLeccion.interactable = true;
         BtnFilaRelam.interactable = LeccionDesbloqueadaParaReto();
@@ -227,8 +279,16 @@ public class ControladorLeccion : MonoBehaviour
             if (PlayerPrefs.GetInt($"Leccion{idLeccionActual}Completa", 0) == 1)
             {
                 int siguiente = idLeccionActual + 1;
-                MostrarLeccionPorID(siguiente);
-                Debug.Log($"Cooldown terminado. Mostrar siguiente lección del CSV: {siguiente}");
+                if (siguiente <= 6) // límite hasta la lección 6
+                {
+                    MostrarLeccionPorID(siguiente);
+                    ActualizarEstadoFilas();
+                    Debug.Log($"Cooldown terminado. Mostrar siguiente lección del CSV: {siguiente}");
+                }
+                else
+                {
+                    Debug.Log("Todas las lecciones completadas.");
+                }
             }
         }
     }

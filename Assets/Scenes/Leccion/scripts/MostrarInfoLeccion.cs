@@ -22,8 +22,12 @@ public class MostrarInfoLeccion : MonoBehaviour
 
     [Header("Archivo CSV")]
     public string nombreArchivo = "TablaLecciones.csv";
+    public int idLeccionActual = 1;
 
     private List<string[]> todasLasLecciones = new List<string[]>();
+
+    private const float PROGRESO_MAX = 16.5f;
+    private const float VALOR_MODULO = 5.5f;
 
     void Start()
     {
@@ -40,13 +44,8 @@ public class MostrarInfoLeccion : MonoBehaviour
             BtnRegresar_0.onClick.RemoveAllListeners();
             BtnRegresar_0.onClick.AddListener(() =>
             {
-                Debug.Log("BtnRegresar_0 presionado → Cargando escena Lecciones");
                 SceneManager.LoadScene("Lecciones");
             });
-        }
-        else
-        {
-            Debug.LogError("BtnRegresar_0 no está asignado en el Inspector");
         }
 
         if (FeedBackContinuarBtn_0 != null)
@@ -54,35 +53,31 @@ public class MostrarInfoLeccion : MonoBehaviour
             FeedBackContinuarBtn_0.onClick.RemoveAllListeners();
             FeedBackContinuarBtn_0.onClick.AddListener(() =>
             {
-                Debug.Log("FeedBackContinuarBtn_0 presionado → Cargando escena RetoRelampago");
+                float avLecc = PlayerPrefs.GetFloat($"AvanceLeccion{idLeccionActual}", 0f);
+                avLecc = Mathf.Min(avLecc + VALOR_MODULO, PROGRESO_MAX);
+                PlayerPrefs.SetFloat($"AvanceLeccion{idLeccionActual}", avLecc);
+                PlayerPrefs.Save();
+
+                Debug.Log($"Progreso teoría L{idLeccionActual}: {avLecc}/{PROGRESO_MAX}");
+
                 SceneManager.LoadScene("RetoRelampago");
             });
-        }
-        else
-        {
-            Debug.LogError("FeedBackContinuarBtn_0 no está asignado en el Inspector");
         }
     }
 
     void CargarLecciones()
     {
         string ruta = Path.Combine(Application.streamingAssetsPath, nombreArchivo);
-        if (!File.Exists(ruta))
-        {
-            Debug.LogError("Archivo CSV no encontrado en: " + ruta);
-            return;
-        }
+        if (!File.Exists(ruta)) return;
 
         string[] lineas = File.ReadAllLines(ruta);
-        for (int i = 1; i < lineas.Length; i++) // saltar encabezado
+        for (int i = 1; i < lineas.Length; i++)
         {
             if (string.IsNullOrWhiteSpace(lineas[i])) continue;
             string[] campos = ParseCSVLine(lineas[i]);
             if (campos.Length >= 6)
                 todasLasLecciones.Add(campos);
         }
-
-        Debug.Log("Lecciones cargadas: " + todasLasLecciones.Count);
     }
 
     IEnumerator DemoRecorrido()
@@ -90,7 +85,6 @@ public class MostrarInfoLeccion : MonoBehaviour
         for (int i = 0; i < todasLasLecciones.Count; i++)
         {
             ActualizarTextos(todasLasLecciones[i]);
-            Debug.Log($"Mostrando lección #{i + 1}: {nomLeccionTMP.text}");
             yield return new WaitForSeconds(2f);
         }
     }
@@ -110,9 +104,7 @@ public class MostrarInfoLeccion : MonoBehaviour
         string[] rawFields = Regex.Split(line, pattern);
 
         for (int i = 0; i < rawFields.Length; i++)
-        {
             rawFields[i] = rawFields[i].Trim().Trim('"').Replace("\"\"", "\"");
-        }
 
         return rawFields;
     }

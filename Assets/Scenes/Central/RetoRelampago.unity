@@ -409,6 +409,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControladorRetoRelampago
   BtnRegresar: {fileID: 1869233966}
+  BtnRespuesta1: {fileID: 1244292550}
+  BtnRespuesta2: {fileID: 1707018232}
+  BtnRespuesta3: {fileID: 1951857188}
   NomLeccionTMP: {fileID: 331822859}
   TituloCuestionario: {fileID: 1606793539}
   TextBtn1: {fileID: 213252584}
