@@ -4,6 +4,7 @@ using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class FoxRunner : MonoBehaviour
 {
     [Header("Fuerza de salto horizontal")]
@@ -14,7 +15,7 @@ public class FoxRunner : MonoBehaviour
 
     [Header("Sprites")]
     [SerializeField] private Sprite idleSprite; // sprite normal
-    [SerializeField] private Sprite slideSprite; // sprite usado al recibir da�o
+    [SerializeField] private Sprite slideSprite; // sprite usado al recibir daño
 
     [Header("Tambaleo horizontal")]
     [SerializeField] private float tambaleoAmplitud = 0.25f; // amplitud
@@ -22,11 +23,15 @@ public class FoxRunner : MonoBehaviour
 
     [Header("Deteccion de input touch")]
     [SerializeField] private float tapThreshold = 0.2f; // tiempo tap
-    [SerializeField] private float holdThreshold = 0.25f; // tiempo hold
 
     [Header("Sonidos")]
     [SerializeField] private AudioClip jumpSound; // sonido salto
-    [SerializeField] private AudioClip hurtSound; // sonido da�o
+    [SerializeField] private AudioClip hurtSound; // sonido daño
+
+    [Header("Salida al recibir daño")]
+    [SerializeField] private float salidaVelocidadX = 40f; // velocidad horizontal de salida
+    [SerializeField] private float salidaVelocidadY = 10f; // velocidad vertical de salida
+    [SerializeField] private float salidaDelay = 1f;       // tiempo antes de cargar escena
 
     private AudioSource audioSource; // audio
     private Rigidbody2D FoxRb; // cuerpo fisico
@@ -38,7 +43,7 @@ public class FoxRunner : MonoBehaviour
     private bool isPressing = false; // tocando
     private float pressStartTime = 0f; // inicio toque
 
-    private bool hasTakenDamage = false; // da�o recibido
+    private bool hasTakenDamage = false; // daño recibido
 
     void Start()
     {
@@ -54,7 +59,8 @@ public class FoxRunner : MonoBehaviour
 
     void Update()
     {
-        if (hasTakenDamage) return; // no hacer nada si ya fue golpeado
+        // Si ya recibió daño, no aplicar lógica normal
+        if (hasTakenDamage) return;
 
         LeerInputTouch(); // procesa input
 
@@ -69,8 +75,12 @@ public class FoxRunner : MonoBehaviour
             transform.localPosition = new Vector3(posicionInicial.x + offsetX, posicionInicial.y, posicionInicial.z);
         }
 
-        float clampedX = Mathf.Clamp(transform.position.x, -limiteX, limiteX); // limite X
-        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+        // Aplica límite horizontal solo si no está en salida
+        if (!hasTakenDamage)
+        {
+            float clampedX = Mathf.Clamp(transform.position.x, -limiteX, limiteX);
+            transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+        }
     }
 
     private void LeerInputTouch()
@@ -93,7 +103,7 @@ public class FoxRunner : MonoBehaviour
                 StartCoroutine(SaltoLateral());
 
             isPressing = false;
-        }   
+        }
     }
 
     public void RecibirDato()
@@ -101,7 +111,7 @@ public class FoxRunner : MonoBehaviour
         if (hasTakenDamage) return;
         hasTakenDamage = true;
 
-        sr.sprite = slideSprite; // sprite al recibir dato
+        sr.sprite = slideSprite; // sprite al recibir daño
 
         if (hurtSound != null)
             audioSource.PlayOneShot(hurtSound);
@@ -128,20 +138,21 @@ public class FoxRunner : MonoBehaviour
         if (jumpSound != null)
             audioSource.PlayOneShot(jumpSound);
 
-        FoxRb.linearVelocity = new Vector2(sideForce, FoxRb.linearVelocity.y); // derecha
+        FoxRb.velocity = new Vector2(sideForce, FoxRb.velocity.y); // derecha
         yield return new WaitForSeconds(0.7f);
 
-        FoxRb.linearVelocity = new Vector2(-sideForce, FoxRb.linearVelocity.y); // izquierda
+        FoxRb.velocity = new Vector2(-sideForce, FoxRb.velocity.y); // izquierda
         yield return new WaitForSeconds(0.7f);
 
-        FoxRb.linearVelocity = Vector2.zero; // detiene
+        FoxRb.velocity = Vector2.zero; // detiene
         enElAire = false; // fin salto
     }
 
     private IEnumerator SalirDePantalla()
     {
-        FoxRb.linearVelocity = new Vector2(20f, 5f); // impulso fuerte
-        yield return new WaitForSeconds(2f); // espera
-        SceneManager.LoadScene("Home"); // carga escena
+        // Usa valores configurables desde el Inspector
+        FoxRb.velocity = new Vector2(salidaVelocidadX, salidaVelocidadY);
+        yield return new WaitForSeconds(salidaDelay);
+        SceneManager.LoadScene("Home");
     }
 }
